@@ -127,13 +127,13 @@ Func guiInformation()
 	$Label2 = GUICtrlCreateLabel("Version  v1.0", 124, 62, 66, 17)
 	$Label3 = GUICtrlCreateLabel("Author  mmiikeke", 124, 92, 85, 17)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
-	$Button1 = GUICtrlCreateButton("&OK", 97, 144, 75, 25, 0)
+	$InformationClose = GUICtrlCreateButton("&OK", 97, 144, 75, 25, 0)
+	GUICtrlSetFont(-1, 10, 800, 0, "UD Digi Kyokasho NK-B")
 	GUISetState(@SW_SHOW)
 	#EndRegion ### END Koda GUI section ###
 
-
 	GUISetOnEvent($GUI_EVENT_CLOSE, "On_Close")
-	GUICtrlSetOnEvent($Button1, "On_Close")
+	GUICtrlSetOnEvent($InformationClose, "On_Close")
 	GUIRegisterMsg($WM_COMMAND, "Interrupt")
 EndFunc
 
