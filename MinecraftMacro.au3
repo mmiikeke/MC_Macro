@@ -25,8 +25,6 @@ AutoitSetOption("GuiOnEventMode", 1)
 Global $fInterrupt = -1
 Global $fInterrupt2 = 0
 Global $MouseSpeed = 2
-Global $selfhWnd
-Global $subhWnd
 Global $targethWnd
 Global $winTitle = "Minecraft"
 Global $GUI1
@@ -100,7 +98,6 @@ Func guiSetWindowTitle()
 	GUICtrlSetOnEvent($SetWindowTitleOK, "SetWindowTitleOK")
 	GUICtrlSetOnEvent($SetWindowTitleCancel, "SetWindowTitleCancel")
 	GUIRegisterMsg($WM_COMMAND, "Interrupt")
-
 EndFunc
 
 Func guiProcessWindow()
@@ -154,7 +151,7 @@ Func main()
 EndFunc
 
 Func Initialize()
-	$selfhWnd = WinGetHandle("[active]")
+
 EndFunc
 
 #Region ### START Menu Function section ###
@@ -174,15 +171,17 @@ Func ProcessWindow()
 	guiProcessWindow()
 	GUISwitch($GUI1)
 	GUISetState(@SW_DISABLE)
+	Local $newHandle = 9999
 
 	$fInterrupt2 = 0
 	$callbackInt = 0
-	$subhWnd = WinGetHandle("[active]")
 
 	While $fInterrupt2 = 0
-		If ((Not (WinGetHandle("[active]") = $subhWnd)) And (Not (WinGetHandle("[active]") = $selfhWnd)) And (Not (StringCompare(WinGetTitle("[active]"), "") = 0))) Then
+		$newHandle = WinGetHandle("[active]")
+
+		If ((Not ($newHandle = $GUI1)) And (Not ($newHandle = $GUI2)) And (Not (StringCompare(WinGetTitle("[active]"), "") = 0))) Then
 			$callbackInt = 1
-			$callbackhWnd = WinGetHandle("[active]")
+			$callbackhWnd = $newHandle
 			GUICtrlSetData($ProcessWindowL, WinGetTitle($callbackhWnd))
 			Sleep(100)
 		EndIf
@@ -297,7 +296,7 @@ Func AutoClicker()
 		$buttonU = $WM_LBUTTONUP
 
 		while $fInterrupt = 0
-			ToolTip("Click " & $counter & "times", 0, 0)
+			ToolTip("LClick " & $counter & "times", 0, 0)
 
 			_SendMessage($targethWnd, $buttonD)
 			Sleep(10)
@@ -312,7 +311,7 @@ Func AutoClicker()
 		$buttonU = $WM_RBUTTONUP
 
 		while $fInterrupt = 0
-			ToolTip("Click " & $counter & "times", 0, 0)
+			ToolTip("RClick " & $counter & "times", 0, 0)
 
 			_SendMessage($targethWnd, $buttonD)
 			Sleep(10)
@@ -324,7 +323,7 @@ Func AutoClicker()
 		WEnd
 	ElseIf StringCompare(GUICtrlRead($AutoClickerC), "L shift") = 0 Then
 		while $fInterrupt = 0
-			ToolTip("Click " & $counter & "times", 0, 0)
+			ToolTip("Shift " & $counter & "times", 0, 0)
 
 			ControlSend($targethWnd, "", "", "{LSHIFT down}")
 			Sleep(Floor(GUICtrlRead($AutoClickerI)/2))
